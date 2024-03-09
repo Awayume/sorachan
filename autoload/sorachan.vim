@@ -1,5 +1,5 @@
-let s:width=nvim_get_option("columns")
-let s:height=nvim_get_option("lines")
+let s:width=&columns
+let s:height=&lines
 let s:winconf={"style":"minimal","relative":"editor","width":40,"height":20,"row":s:height/2-10,"col":s:width/2-20,"focusable":v:false}
 hi! background ctermbg=103
 hi! eye1 ctermbg=cyan ctermfg=cyan
@@ -277,8 +277,10 @@ function s:leave()
 endfunction
 
 function! s:createWin()
-  let s:win_id=nvim_open_win(nvim_create_buf(v:false,v:true),v:true,s:winconf)
-  call nvim_win_set_option(s:win_id,"winhighlight","Normal:background")
+  let s:buf = bufnr('', 1)
+  let s:win_id = win_execute(0, 'aboveleft new | setlocal nobuflisted buftype=nofile bufhidden=wipe')
+  call matchadd('Normal', '^\%'.line('$').'l')
+  highlight Normal guibg=NONE
 endfunction
 
 function! s:setColor()
